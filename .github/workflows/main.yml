@@ -45,3 +45,16 @@ jobs:
         run: |
           npm run lint
           npm run test
+
+  dependent-deployment-workflow:
+      name: Dependent Deployment
+      # The type of runner that the job will run on
+      runs-on: ubuntu-latest
+      # build Docker image and push to docker hub
+      # only if the app build and test successfully
+      needs: build_test
+      if: always() && needs.build_test.result == 'success'
+
+      steps:
+      - name: Run a one-line script
+        run: echo Hello, world!
